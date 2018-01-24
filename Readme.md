@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Olena Kovalevska](https://up.htmlacademy.ru/javascript/12/user/580825).
-* Наставник: `Неизвестно`.
+* Наставник: `Николай Загорный`.
 
 ---
 
