@@ -152,7 +152,7 @@ newElement.querySelector('p:nth-of-type(5n)').textContent = proposals[0].offer.d
 var photosContainer = newElement.querySelector('.popup__pictures');
 for (var n = 1; n <= proposals[0].offer.photos.length; n++) {
   var itemPhoto = photosContainer.querySelector('img').cloneNode(true);
-  itemPhoto.setAttribute('src', proposals[0].offer.photos[n-1]);
+  itemPhoto.setAttribute('src', proposals[0].offer.photos[n - 1]);
   itemPhoto.setAttribute('width', '60');
   itemPhoto.setAttribute('height', '60');
   photosContainer.appendChild(itemPhoto);
