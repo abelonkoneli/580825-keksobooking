@@ -26,7 +26,6 @@ var photosArr = [
 ];
 var type;
 var time;
-// функция для проверки типа жилья. Со switch(proposals[i].offer.title[j]) не срабатывает:
 var checkType = function (key) {
   for (var i = 0; i <= 7; i++) {
     if (key === 'Большая уютная квартира' || key === 'Маленькая неуютная квартира') {
@@ -38,11 +37,9 @@ var checkType = function (key) {
     }
   } return type;
 };
-// функция для определения случайного целого числа из диапазона min - max:
 var getRandomQuantity = function (max, min) {
   return (Math.round(Math.random() * (max - min) + min));
 };
-  // функция для рандомной сортировки массивов исходных данных:
 var sortArray = function (arr) {
   var index;
   for (var i = 0; i <= arr.length - 1; i++) {
@@ -52,13 +49,11 @@ var sortArray = function (arr) {
   }
   return arr;
 };
-// функция для создания массива proposals из 8 елементов:
 var createArray = function () {
   sortArray(titles);
   for (var i = 0; i <= 7; i++) {
     sortArray(photosArr);
     var featuresArr = [];
-    // цикл для создания массива features рандомной длины с сохранением порядка элементов:
     for (var j = 0; j <= featuresArrCopy.length - 1; j++) {
       if (getRandomQuantity(1, 0)) {
         featuresArr.push(featuresArrCopy[j]);
@@ -79,87 +74,93 @@ var createArray = function () {
         checkout: time,
         features: featuresArr,
         description: '',
-        photos: photosArr.slice(0, 3)// если просто присвоить перетасованный массив photosArr, без slice, в массив photos всех объекты попадает последняя версия тасования, т.е. он одинаков для всех объектов, тогда как в задании написано, что фото должны идти в произвольном порядке
+        photos: photosArr.slice(0, 3)
       },
       location: {
         x: getRandomQuantity(900, 300),
         y: getRandomQuantity(500, 150)
       }
     };
-    proposals[i].offer.address = proposals[i].location.x + ', ' + proposals[i].location.y;// обращение к location.x, location.y в момент присвоения значения offer.address не срабатывает, поэтому отдельной строчкой
+    proposals[i].offer.address = proposals[i].location.x + ', ' + proposals[i].location.y;
   } return proposals;
 };
 createArray();
-// выбор родительского узла для вставки основного фрагмента и удаление у него класса map__faded:
 var mapElement = document.querySelector('.map');
 mapElement.classList.remove('map--faded');
-// клонирование и заполнение элемента-кнопки:
-var pointerElement = document.querySelector('button.map__pin').cloneNode(true);
-pointerElement.style.left = (proposals[0].location.x - 20);
-pointerElement.style.top = (proposals[0].location.y - 40);
-
-pointerElement.querySelector('img').setAttribute('src', proposals[0].author.avatar);
-pointerElement.querySelector('img').setAttribute('width', '40');
-pointerElement.querySelector('img').setAttribute('height', '40');
-pointerElement.querySelector('img').setAttribute('draggable', 'false');
-// создание фрагмента и вставка его в map__pin:
-var fragment = document.createDocumentFragment();
-fragment.appendChild(pointerElement);
-var buttonLocation = document.querySelector('.map__pins');
-buttonLocation.appendChild(fragment);
-// клонирование и заполнение элемента-карты
-var newElement = document.querySelector('template, article, .map__card').cloneNode(true).content;
-newElement.querySelector('img').setAttribute('src', proposals[0].author.avatar);
-newElement.querySelector('h3').textContent = proposals[0].offer.title;
-newElement.querySelector('p:first-of-type').textContent = proposals[0].offer.address;
-newElement.querySelector('p:nth-of-type(2n)').innerHTML = proposals[0].offer.price + ' &#x20bd;/ночь';
-newElement.querySelector('h4').textContent = proposals[0].offer.type;
-newElement.querySelector('p:nth-of-type(3n)').textContent = proposals[0].offer.rooms + ' комнаты для ' + proposals[0].offer.guests + ' гостей';
-newElement.querySelector('p:nth-of-type(4n)').textContent = 'Заезд после ' + proposals[0].offer.checkin + ', ' + 'выезд до ' + proposals[0].offer.checkout;
-// удаление коллекции features и вставка обратно присутствующих в данном объекте фич)
-var features = newElement.querySelector('.popup__features');
-var featuresColl = newElement.querySelectorAll('.feature');
-features.removeChild(featuresColl[0]);
-features.removeChild(featuresColl[1]);
-features.removeChild(featuresColl[2]);
-features.removeChild(featuresColl[3]);
-features.removeChild(featuresColl[4]);
-features.removeChild(featuresColl[5]);
-for (var j = 0; j <= proposals[0].offer.features.length - 1; j++) {
-  switch (proposals[0].offer.features[j]) {
-    case 'wifi':
-      features.appendChild(featuresColl[0]);
-      break;
-    case 'dishwasher':
-      features.appendChild(featuresColl[1]);
-      break;
-    case 'parking':
-      features.appendChild(featuresColl[2]);
-      break;
-    case 'washer':
-      features.appendChild(featuresColl[3]);
-      break;
-    case 'elevator':
-      features.appendChild(featuresColl[4]);
-      break;
-    case 'conditioner':
-      features.appendChild(featuresColl[5]);
-      break;
+var insertButton = function () {
+  for (var i = 0; i < proposals.length; i++) {
+    var pointerElement = document.querySelector('button.map__pin').cloneNode(true);
+    pointerElement.querySelector('img').setAttribute('src', proposals[i].author.avatar);
+    pointerElement.style.left = (proposals[i].location.x - 20) + 'px';
+    pointerElement.style.top = (proposals[i].location.y - 40) + 'px';
+    pointerElement.querySelector('img').setAttribute('width', '40');
+    pointerElement.querySelector('img').setAttribute('height', '40');
+    pointerElement.querySelector('img').setAttribute('draggable', 'false');
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(pointerElement);
+    var buttonLocation = document.querySelector('.map__pins');
+    buttonLocation.appendChild(fragment);
   }
-}
-newElement.querySelector('p:nth-of-type(5n)').textContent = proposals[0].offer.description;
-// клонирование элементов для вставки фото:
-var photosContainer = newElement.querySelector('.popup__pictures');
-for (var n = 1; n <= proposals[0].offer.photos.length; n++) {
-  var itemPhoto = photosContainer.querySelector('img').cloneNode(true);
-  itemPhoto.setAttribute('src', proposals[0].offer.photos[n - 1]);
-  itemPhoto.setAttribute('width', '60');
-  itemPhoto.setAttribute('height', '60');
-  photosContainer.appendChild(itemPhoto);
-}
-// создание фрагмента для вставки в map__card:
-var mainFragment = document.createDocumentFragment();
-mainFragment.appendChild(newElement);
-// вставка фрагмента в разметку:
-var nextSibling = mapElement.querySelector('.map__filters-container');
-mapElement.insertBefore(mainFragment, nextSibling);
+  return buttonLocation;
+};
+insertButton();
+
+var insertCard = function (i) {
+  var newElement = document.querySelector('template, article, .map__card').cloneNode(true).content;
+  newElement.querySelector('h3').textContent = proposals[i].offer.title;
+  newElement.querySelector('p:first-of-type').textContent = proposals[i].offer.address;
+  newElement.querySelector('p:nth-of-type(2n)').innerHTML = proposals[i].offer.price + ' &#x20bd;/ночь';
+  if (proposals[i].offer.type === 'flat') {
+    newElement.querySelector('h4').textContent = 'Квартира';
+  } else if (proposals[i].offer.type === 'house') {
+    newElement.querySelector('h4').textContent = 'Дом';
+  } else {
+    newElement.querySelector('h4').textContent = 'Бунгало';
+  }
+  newElement.querySelector('p:nth-of-type(3n)').textContent = proposals[i].offer.rooms + ' комнаты для ' + proposals[i].offer.guests + ' гостей';
+  newElement.querySelector('p:nth-of-type(4n)').textContent = 'Заезд после ' + proposals[i].offer.checkin + ', ' + 'выезд до ' + proposals[i].offer.checkout;
+  var features = newElement.querySelector('.popup__features');
+  var featuresColl = newElement.querySelectorAll('.feature');
+  features.removeChild(featuresColl[0]);
+  features.removeChild(featuresColl[1]);
+  features.removeChild(featuresColl[2]);
+  features.removeChild(featuresColl[3]);
+  features.removeChild(featuresColl[4]);
+  features.removeChild(featuresColl[5]);
+  for (var j = 0; j <= proposals[i].offer.features.length - 1; j++) {
+    switch (proposals[i].offer.features[j]) {
+      case 'wifi':
+        features.appendChild(featuresColl[0]);
+        break;
+      case 'dishwasher':
+        features.appendChild(featuresColl[1]);
+        break;
+      case 'parking':
+        features.appendChild(featuresColl[2]);
+        break;
+      case 'washer':
+        features.appendChild(featuresColl[3]);
+        break;
+      case 'elevator':
+        features.appendChild(featuresColl[4]);
+        break;
+      case 'conditioner':
+        features.appendChild(featuresColl[5]);
+        break;
+    }
+  }
+  newElement.querySelector('p:nth-of-type(5n)').textContent = proposals[i].offer.description;
+  var photosContainer = newElement.querySelector('.popup__pictures');
+  for (var n = 1; n <= proposals[i].offer.photos.length; n++) {
+    var itemPhoto = photosContainer.querySelector('img').cloneNode(true);
+    itemPhoto.setAttribute('src', proposals[i].offer.photos[n - 1]);
+    itemPhoto.setAttribute('width', '60');
+    itemPhoto.setAttribute('height', '60');
+    photosContainer.appendChild(itemPhoto);
+  }
+  var mainFragment = document.createDocumentFragment();
+  mainFragment.appendChild(newElement);
+  var nextSibling = mapElement.querySelector('.map__filters-container');
+  mapElement.insertBefore(mainFragment, nextSibling);
+};
+insertCard(0);
