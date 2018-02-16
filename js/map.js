@@ -94,8 +94,8 @@ createArray();
 var mapElement = document.querySelector('.map');
 mapElement.classList.remove('map--faded');
 // клонирование и заполнение элемента для вставки во фрагмент:
-var pointerElement = document.querySelector('template button').cloneNode(true);
-var buttonElement = pointerElement.querySelector('.map__pin');
+var pointerElement = document.querySelector('.map__pin').cloneNode(true);
+var buttonElement = pointerElement.querySelector('button');
 buttonElement.setAttribute('style', 'left: (proposals[0].location.x - 20) px; top: (proposals[0].location.y - 40) px');
 var imageElement = pointerElement.querySelector('img');
 imageElement.setAttribute('src', 'proposals[0].author.avatar');
