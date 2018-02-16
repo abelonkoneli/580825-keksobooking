@@ -93,77 +93,73 @@ createArray();
 // выбор родительского узла для вставки основного фрагмента и удаление у него класса map__faded:
 var mapElement = document.querySelector('.map');
 mapElement.classList.remove('map--faded');
-// клонирование и заполнение элемента для вставки во фрагмент:
-var pointerElement = document.querySelector('.map__pin').cloneNode(true);
-var buttonElement = pointerElement.querySelector('button');
-buttonElement.style.left = '' + (proposals[0].location.x - 20);
-buttonElement.style.top = '' + (proposals[0].location.y - 40);
-var imageElement = pointerElement.querySelector('img');
-imageElement.setAttribute('src', 'proposals[0].author.avatar');
-imageElement.setAttribute('width', '40');
-imageElement.setAttribute('height', '40');
-imageElement.setAttribute('draggable', 'false');
-buttonElement.appendChild(imageElement);
+// клонирование и заполнение элемента-кнопки:
+var pointerElement = document.querySelector('button.map__pin').cloneNode(true);
+pointerElement.style.left = (proposals[0].location.x - 20);
+pointerElement.style.top = (proposals[0].location.y - 40);
+
+pointerElement.querySelector('img').setAttribute('src', proposals[0].author.avatar);
+pointerElement.querySelector('img').setAttribute('width', '40');
+pointerElement.querySelector('img').setAttribute('height', '40');
+pointerElement.querySelector('img').setAttribute('draggable', 'false');
 // создание фрагмента и вставка его в map__pin:
 var fragment = document.createDocumentFragment();
-fragment.appendChild(buttonElement);
-var locationButton = document.querySelector('.map__pin--main');
-locationButton.appendChild(fragment);
-// создание фрагмента для вставки в map__card:
-var mainFragment = document.createDocumentFragment();
-// клонирование и заполнение элемента для вставки во фрагмент:
-var newElement = document.querySelector('.map__card').cloneNode(true);
-newElement.querySelector('.popup__avatar').setAttribute('src', 'proposals[0].author.avatar');
+fragment.appendChild(pointerElement);
+var buttonLocation = document.querySelector('.map__pins');
+buttonLocation.appendChild(fragment);
+// клонирование и заполнение элемента-карты
+var newElement = document.querySelector('template, article, .map__card').cloneNode(true).content;
+newElement.querySelector('img').setAttribute('src', proposals[0].author.avatar);
 newElement.querySelector('h3').textContent = proposals[0].offer.title;
 newElement.querySelector('p:first-of-type').textContent = proposals[0].offer.address;
-newElement.querySelector('.popup_price').textContent = proposals[0].offer.price + ' &#x20bd;/ночь';
+newElement.querySelector('p:nth-of-type(2n)').innerHTML = proposals[0].offer.price + ' &#x20bd;/ночь';
 newElement.querySelector('h4').textContent = proposals[0].offer.type;
 newElement.querySelector('p:nth-of-type(3n)').textContent = proposals[0].offer.rooms + ' комнаты для ' + proposals[0].offer.guests + ' гостей';
-newElement.querySelector('p:nth-of-type(4n)').textContent = 'Заезд после ' + proposals[0].offer.checkin + ', ' + 'выезд до ' + proposals[0].offers.checkout;
-
-// если ли в массиве features объекта proposals[i] есть каждый из пунктов - клонирование соответствующего узла:
-var featuresContainer = newElement.querySelector('.popup__features');
+newElement.querySelector('p:nth-of-type(4n)').textContent = 'Заезд после ' + proposals[0].offer.checkin + ', ' + 'выезд до ' + proposals[0].offer.checkout;
+// удаление коллекции features и вставка обратно присутствующих в данном объекте фич)
+var features = newElement.querySelector('.popup__features');
+var featuresColl = newElement.querySelectorAll('.feature');
+features.removeChild(featuresColl[0]);
+features.removeChild(featuresColl[1]);
+features.removeChild(featuresColl[2]);
+features.removeChild(featuresColl[3]);
+features.removeChild(featuresColl[4]);
+features.removeChild(featuresColl[5]);
 for (var j = 0; j <= proposals[0].offer.features.length - 1; j++) {
   switch (proposals[0].offer.features[j]) {
     case 'wifi':
-      var itemFeatures = featuresContainer.querySelector('feature--wifi').cloneNode(true);
-      featuresContainer.appendChild(itemFeatures);
+      features.appendChild(featuresColl[0]);
       break;
     case 'dishwasher':
-      itemFeatures = featuresContainer.querySelector('feature--dishwasher').cloneNode(true);
-      featuresContainer.appendChild(itemFeatures);
+      features.appendChild(featuresColl[1]);
       break;
     case 'parking':
-      itemFeatures = featuresContainer.querySelector('feature--parking').cloneNode(true);
-      featuresContainer.appendChild(itemFeatures);
+      features.appendChild(featuresColl[2]);
       break;
     case 'washer':
-      itemFeatures = featuresContainer.querySelector('feature--washer').cloneNode(true);
-      featuresContainer.appendChild(itemFeatures);
+      features.appendChild(featuresColl[3]);
       break;
     case 'elevator':
-      itemFeatures = featuresContainer.querySelector('feature--elevator').cloneNode(true);
-      featuresContainer.appendChild(itemFeatures);
+      features.appendChild(featuresColl[4]);
       break;
     case 'conditioner':
-      itemFeatures = featuresContainer.querySelector('feature--conditioner').cloneNode(true);
-      featuresContainer.appendChild(itemFeatures);
+      features.appendChild(featuresColl[5]);
       break;
   }
 }
 newElement.querySelector('p:nth-of-type(5n)').textContent = proposals[0].offer.description;
 // клонирование элементов для вставки фото:
 var photosContainer = newElement.querySelector('.popup__pictures');
-for (var n = 1; n <= proposals[0].offer.pictures.length; n++) {
+for (var n = 1; n <= proposals[0].offer.photos.length; n++) {
   var itemPhoto = photosContainer.querySelector('img').cloneNode(true);
-  itemPhoto.setAttribute('src', 'proposals[0].offer.pictures[j-1]');
+  itemPhoto.setAttribute('src', proposals[0].offer.photos[n-1]);
+  itemPhoto.setAttribute('width', '60');
+  itemPhoto.setAttribute('height', '60');
   photosContainer.appendChild(itemPhoto);
 }
-// вставка элемента во фрагмент:
-var appendForm = function (childName) {
-  mainFragment.appendChild(childName);
-};
-appendForm(newElement);
+// создание фрагмента для вставки в map__card:
+var mainFragment = document.createDocumentFragment();
+mainFragment.appendChild(newElement);
 // вставка фрагмента в разметку:
 var nextSibling = mapElement.querySelector('.map__filters-container');
 mapElement.insertBefore(mainFragment, nextSibling);
