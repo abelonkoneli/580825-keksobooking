@@ -90,6 +90,9 @@ mapElement.classList.remove('map--faded');
 var insertButton = function () {
   for (var i = 0; i < proposals.length; i++) {
     var pointerElement = document.querySelector('button.map__pin').cloneNode(true);
+    pointerElement.classList.remove('map__pin--main');
+    var svgElement = pointerElement.querySelector('svg');
+    pointerElement.removeChild(svgElement);
     pointerElement.querySelector('img').setAttribute('src', proposals[i].author.avatar);
     pointerElement.style.left = (proposals[i].location.x - 20) + 'px';
     pointerElement.style.top = (proposals[i].location.y - 40) + 'px';
