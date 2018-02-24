@@ -35,7 +35,9 @@ var buttonTemplate = document.querySelector('template').content.querySelector('.
 var cardElementTemplate = document.querySelector('template').content.querySelector('.map__card');
 var pinMain = document.querySelector('.map__pin--main');
 var noticeAddress = document.querySelector('#address');
+var noticeForm = document.querySelector('.notice__form');
 var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var PRICE_MAX = 1000000;
 var PRICE_MIN = 1000;
 var ROOMS_MAX = 5;
@@ -255,11 +257,11 @@ pinMain.style.zIndex = PIN_MAIN_Z_INDEX;
 
 var pinMainInitMouseupHandler = function () {
   mapElement.classList.remove('map--faded');
-  var noticeForm = document.querySelector('.notice__form');
   noticeForm.classList.remove('notice__form--disabled');
   noticeHeader.removeAttribute('disabled');
   noticeTitle.removeAttribute('disabled');
   noticeAddress.removeAttribute('disabled');
+  noticeAddress.setAttribute('readonly', true);
   noticeType.removeAttribute('disabled');
   noticePrice.removeAttribute('disabled');
   noticeTimeIn.removeAttribute('disabled');
@@ -279,3 +281,117 @@ var pinMainAddressMouseupHandler = function () {
 
 pinMain.addEventListener('mouseup', pinMainInitMouseupHandler);
 pinMain.addEventListener('mouseup', pinMainAddressMouseupHandler);
+
+
+var typePriceClickHandler = function () {
+  if (noticeType.value === 'flat') {
+    noticePrice.min = '1000';
+  } else if (noticeType.value === 'bungalo') {
+    noticePrice.min = '0';
+  } else if (noticeType.value === 'house') {
+    noticePrice.min = '5000';
+  } else if (noticeType.value === 'palace') {
+    noticePrice.min = '10000';
+  }
+};
+
+noticeType.addEventListener('click', function () {
+  typePriceClickHandler();
+});
+
+var timeInClickHandler = function () {
+  noticeTimeOut.value = noticeTimeIn.value;
+  noticeTimeIn.title = 'Обратите внимание: при изменении времени заезда меняется время выезда и наоборот';
+};
+
+var timeOutClickHandler = function () {
+  noticeTimeIn.value = noticeTimeOut.value;
+  noticeTimeOut.title = 'Обратите внимание: при изменении времени выезда меняется время заезда и наоборот';
+};
+
+noticeTimeIn.addEventListener('click', timeInClickHandler);
+noticeTimeOut.addEventListener('click', timeOutClickHandler);
+
+var roomsCapacityClickHandler = function () {
+  if (+noticeRoomNumber.value < +noticeCapacity.value) {
+    noticeCapacity.setCustomValidity('Гостей не может быть больше, чем комнат');
+  } else if (noticeRoomNumber.value === '100' && (noticeCapacity.value !== '0')) {
+    noticeCapacity.setCustomValidity('Сто комнат не рассчитаны на гостей');
+  } else if (noticeRoomNumber.value !== '100' && noticeCapacity.value === '0') {
+    noticeCapacity.setCustomValidity('Гостей не может быть меньше одного');
+  } else {
+    noticeCapacity.setCustomValidity('');
+    noticeCapacity.style.border = '';
+  }
+};
+
+noticeCapacity.addEventListener('click', function () {
+  roomsCapacityClickHandler();
+});
+noticeRoomNumber.addEventListener('click', function () {
+  roomsCapacityClickHandler();
+});
+
+var checkTitleLength = function (evt) {
+  if (!evt.invalid) {
+    noticeTitle.style.border = '';
+  }
+};
+
+noticeTitle.addEventListener('click', checkTitleLength);
+
+var priceClickHandler = function (evt) {
+  if (!evt.invalid) {
+    noticePrice.style.border = '';
+  }
+};
+
+noticePrice.addEventListener('click', priceClickHandler);
+
+var noticeSubmitBtn = document.querySelector('.form__submit');
+
+var submitClickHandler = function () {
+  var invalidCollection = document.querySelectorAll('input:invalid, select:invalid');
+  for (var i = 0; i < invalidCollection.length; i++) {
+    invalidCollection[i].style.border = 'solid 1px #ff0000';
+  }
+};
+
+noticeSubmitBtn.addEventListener('click', submitClickHandler);
+
+var noticeReset = document.querySelector('.form__reset');
+
+var resetClickHandler = function () {
+  if (document.querySelector('.map__card')) {
+    removeCardElement();
+  }
+  var pinsCollection = mapElement.querySelectorAll('.map__pin:not(.map__pin--main)');
+  for (var i = 0; i < pinsCollection.length; i++) {
+    document.querySelector('.map__pins').removeChild(pinsCollection[i]);
+  }
+  noticeAddress.value = (pinMain.offsetLeft + PIN_MAIN_WIDTH / 2) + ', ' + (pinMain.offsetTop + (PIN_MAIN_HEIGHT + PIN_MAIN_AFTER_HEIGHT) / 2);
+  noticeHeader.setAttribute('disabled', true);
+  noticeTitle.setAttribute('disabled', true);
+  noticeAddress.setAttribute('disabled', true);
+  noticeType.setAttribute('disabled', true);
+  noticePrice.setAttribute('disabled', true);
+  noticeTimeIn.setAttribute('disabled', true);
+  noticeTimeOut.setAttribute('disabled', true);
+  noticeRoomNumber.setAttribute('disabled', true);
+  noticeCapacity.setAttribute('disabled', true);
+  noticeFeatures.setAttribute('disabled', true);
+  noticeDescription.setAttribute('disabled', true);
+  noticeImages.setAttribute('disabled', true);
+  noticeSubmitBtn.setAttribute('disabled', true);
+  noticeForm.classList.add('notice__form--disabled');
+  mapElement.classList.add('map--faded');
+};
+
+var resetKeypressHandler = function (evt) {
+  if (evt.keycode === ENTER_KEYCODE) {
+    resetClickHandler();
+  }
+};
+
+noticeReset.addEventListener('click', resetClickHandler);
+noticeReset.addEventListener('keypress', resetKeypressHandler);
