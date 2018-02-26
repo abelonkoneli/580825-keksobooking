@@ -1,7 +1,8 @@
 // модуль генерирует массив window.data.proposals, экспортируемый модулем data
 'use strict';
 
-(window.createArray = function () {
+(function () {
+  window.createArray = function () {
   var time = '';
   var IMG_TEMPLATE = 'img/avatars/user0';
   var IMG_EXT = '.png';
@@ -45,4 +46,5 @@
     };
     window.data.proposals[i].offer.address = window.data.proposals[i].location.x + ', ' + window.data.proposals[i].location.y;
   } return window.data.proposals;
+};
 })();
