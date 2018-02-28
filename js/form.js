@@ -71,6 +71,7 @@
     }
     window.utilities.disableNoticeForm();
     window.data.noticeAddress.value = (window.data.pinMain.offsetLeft + 50 / 2) + ', ' + (window.data.pinMain.offsetTop + (70 + 22) / 2);
+    window.data.pinMain.style = '';
   };
   var resetKeypressHandler = function (evt) {
     if (evt.keycode === window.data.ENTER_KEYCODE) {

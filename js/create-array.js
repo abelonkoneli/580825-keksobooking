@@ -3,6 +3,7 @@
 
 (function () {
   window.createArray = function () {
+    
   var time = '';
   var IMG_TEMPLATE = 'img/avatars/user0';
   var IMG_EXT = '.png';
@@ -12,14 +13,15 @@
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
   ];
 
-  window.utilities.sortArray(window.data.titles);
+    window.utilities.sortArray(window.data.titles);
 
-  for (var i = 0; i < window.data.titles.length; i++) {
-    window.utilities.sortArray(photosArr);
-    var featuresArr = [];
-    for (var j = 0; j <= window.data.featuresArrCopy.length - 1; j++) {
-      if (window.utilities.getRandomQuantity(1, 0)) {
-        featuresArr.push(window.data.featuresArrCopy[j]);
+    for (var i = 0; i < window.data.titles.length; i++) {
+      window.utilities.sortArray(photosArr);
+      var featuresArr = [];
+      for (var j = 0; j <= window.data.featuresArrCopy.length - 1; j++) {
+        if (window.utilities.getRandomQuantity(1, 0)) {
+          featuresArr.push(window.data.featuresArrCopy[j]);
+        }
       }
     }
     window.data.proposals[i] = {
