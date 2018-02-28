@@ -65,7 +65,6 @@
       if (!window.data.mapElement.classList.contains('map--faded')) {
         window.data.mapElement.classList.add('map--faded');
       }
-
     },
 
     removeCardElement: function () {
