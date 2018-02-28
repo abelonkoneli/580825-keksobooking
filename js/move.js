@@ -4,9 +4,9 @@
   var activeArea = document.querySelector('.map__pins');
   var borderBottom = document.querySelector('.map__filters-container');
   var maxX = activeArea.clientWidth;
-  var maxY = activeArea.clientHeight - borderBottom.offsetHeight;
+  var maxY = 500;
   var minX = 0;
-  var minY = 100;
+  var minY = 150;
   var startX;
   var startY;
   var shiftX;
