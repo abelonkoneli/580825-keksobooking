@@ -88,4 +88,8 @@
   window.data.noticeRoomNumber.addEventListener('click', roomsCapacityClickHandler);
   window.data.noticeReset.addEventListener('click', resetClickHandler);
   window.data.noticeReset.addEventListener('keypress', resetKeypressHandler);
+  window.data.noticeForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.send(new FormData(window.data.noticeForm), window.utilities.successSendHandler, window.utilities.errorSendHandler);
+  });
 })();
