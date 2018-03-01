@@ -53,7 +53,10 @@
       itemPhoto.setAttribute('src', prop.offer.photos[n - 1]);
       itemPhoto.setAttribute('width', MAP_CARD_WIDTH / 3);
       itemPhoto.setAttribute('height', MAP_CARD_WIDTH / 3); // чтобы превью фото были квадратными, незвисимо от фактической высоты
-      photosContainer.appendChild(itemPhoto);
+    }
+    photosContainer.appendChild(itemPhoto);
+    if (prop.offer.photos.length > 3) {
+      photosContainer.setAttribute('style', 'overflow: auto; height: 70px;');
     }
     cardElement.querySelector('img.popup__avatar').setAttribute('src', prop.author.avatar);
     return cardElement;
