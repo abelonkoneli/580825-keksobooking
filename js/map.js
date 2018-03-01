@@ -20,12 +20,13 @@
     return btn.addEventListener('click', buttonPinClickHandlerInner);
   };
   window.data.pinMain.addEventListener('mouseup', window.utilities.enableNoticeForm);
-  window.insertButtons = function () {
+  window.insertButtons = function (data) {
     var fragment = document.createDocumentFragment();
     var btn;
-    for (var i = 0; i < window.data.proposals.length; i++) {
-      btn = window.createButtonElement(window.data.proposals[i]);
-      buttonClickHandlerOuter(btn, window.data.proposals[i]);
+    window.utilities.sortArray(data);
+    for (var i = 0; i < 8; i++) {
+      btn = window.createButtonElement(data[i]);
+      buttonClickHandlerOuter(btn, data[i]);
       fragment.appendChild(btn);
     }
     return document.querySelector('.map__pins').appendChild(fragment);
