@@ -3,7 +3,7 @@
 
 (function () {
   window.createArray = function () {
-    
+
   var time = '';
   var IMG_TEMPLATE = 'img/avatars/user0';
   var IMG_EXT = '.png';
@@ -23,7 +23,6 @@
           featuresArr.push(window.data.featuresArrCopy[j]);
         }
       }
-    }
     window.data.proposals[i] = {
       author: {
         avatar: IMG_TEMPLATE + (i + 1) + IMG_EXT
