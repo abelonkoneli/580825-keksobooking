@@ -8,6 +8,8 @@
     AFTER_HEIGHT: 22,
     Z_INDEX: 999
   };
+  var DEBOUNCE_INTERVAL = 500;
+  var lastTimeout;
 
   window.utilities = {
     checkType: function (key) {
@@ -54,6 +56,7 @@
       }
     },
     successLoadHandler: function (data) {
+      window.optionalOffers = data;
       window.insertButtons(data);
     },
 
@@ -141,6 +144,12 @@
 
       errorSendAlert.textContent = errorMessage;
       window.data.noticeForm.insertAdjacentElement('afterbegin', errorSendAlert);
+    },
+    debounce: function (fnc) {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(fnc, DEBOUNCE_INTERVAL);
     }
   };
 })();
