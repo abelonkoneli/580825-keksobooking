@@ -145,11 +145,11 @@
       errorSendAlert.textContent = errorMessage;
       window.data.noticeForm.insertAdjacentElement('afterbegin', errorSendAlert);
     },
-    debounce: function (fnc) {
+    debounce: function (fun) {
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
-      lastTimeout = window.setTimeout(fnc, DEBOUNCE_INTERVAL);
+      lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
     }
   };
 })();
