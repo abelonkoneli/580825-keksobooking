@@ -2,29 +2,29 @@
 'use strict';
 
 (function () {
-  var cardElementTemplate = document.querySelector('template').content.querySelector('.map__card');
   var CURRENCY = '&#x20bd';
+  var cardElementTemplate = document.querySelector('template').content.querySelector('.map__card');
 
   var getTypeName = function (el) {
     var typeNames = [
       {
-        TYPE: 'bungalo',
-        NAME: 'Бунгало'
+        type: 'bungalo',
+        name: 'Бунгало'
       },
       {
-        TYPE: 'flat',
-        NAME: 'Квартира'
+        type: 'flat',
+        name: 'Квартира'
       },
       {
-        TYPE: 'house',
+        type: 'house',
         name: 'Дом'
       }
     ];
-    if (el.offer.type === typeNames[1].TYPE) {
-      return typeNames[1].NAME;
-    } else if (el.offer.type === typeNames[2].TYPE) {
-      return typeNames[2].NAME;
-    } return typeNames[0].NAME;
+    if (el.offer.type === typeNames[1].type) {
+      return typeNames[1].name;
+    } else if (el.offer.type === typeNames[2].type) {
+      return typeNames[2].name;
+    } return typeNames[0].name;
   };
 
   var getFeatures = function (el, arr) {
