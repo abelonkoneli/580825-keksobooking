@@ -3,7 +3,7 @@
 
 (function () {
   window.data = {
-    Keycode: {
+    keycode: {
       ESC: 27,
       ENTER: 13
     },
@@ -24,6 +24,5 @@
       priceElement: document.querySelector('#price'),
       titleElement: document.querySelector('#title')
     }
-
   };
 })();
