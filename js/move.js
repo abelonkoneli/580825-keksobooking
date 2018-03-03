@@ -1,11 +1,11 @@
 'use strict';
 
 (function () {
-  var activeArea = document.querySelector('.map__pins');
-  var maxX = activeArea.clientWidth;
+  var MAX_X = activeArea.clientWidth;
   var MAX_Y = 500;
   var MIN_X = 0;
   var MIN_Y = 150;
+  var activeArea = document.querySelector('.map__pins');
   var startX;
   var startY;
   var shiftX;
@@ -23,7 +23,7 @@
     var moveY = y - startY;
     var currentX = shiftX + moveX;
     var currentY = shiftY + moveY;
-    if (currentX <= maxX && currentX >= MIN_X) {
+    if (currentX <= MAX_X && currentX >= MIN_X) {
       shiftX = currentX;
       window.data.pinMainElement.style.left = shiftX + 'px';
       startX = x;
