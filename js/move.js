@@ -1,11 +1,10 @@
 'use strict';
 
 (function () {
-  var MAX_X = activeArea.clientWidth;
+  var MAX_X = document.querySelector('.map__pins').clientWidth;
   var MAX_Y = 500;
   var MIN_X = 0;
   var MIN_Y = 150;
-  var activeArea = document.querySelector('.map__pins');
   var startX;
   var startY;
   var shiftX;
