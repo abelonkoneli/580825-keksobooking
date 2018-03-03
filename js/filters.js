@@ -1,119 +1,120 @@
 'use strict';
 
 (function () {
-  window.filterButtons = function () {
-    var mapFilters = document.querySelector('.map__filters');
-    var typeFilter = mapFilters.querySelector('#housing-type');
-    var priceFilter = mapFilters.querySelector('#housing-price');
-    var roomsFilter = mapFilters.querySelector('#housing-rooms');
-    var guestsFilter = mapFilters.querySelector('#housing-guests');
-    var wifiFilter = mapFilters.querySelector('#filter-wifi');
-    var dishwasherFilter = mapFilters.querySelector('#filter-dishwasher');
-    var parkingFilter = mapFilters.querySelector('#filter-parking');
-    var washerFilter = mapFilters.querySelector('#filter-washer');
-    var elevatorFilter = mapFilters.querySelector('#filter-elevator');
-    var conditionerFilter = mapFilters.querySelector('#filter-conditioner');
-    window.optionalOffers = [];
+  var typeFilter = window.data.mapFiltersElement.querySelector('#housing-type');
+  var priceFilter = window.data.mapFiltersElement.querySelector('#housing-price');
+  var roomsFilter = window.data.mapFiltersElement.querySelector('#housing-rooms');
+  var guestsFilter = window.data.mapFiltersElement.querySelector('#housing-guests');
+  var wifiFilter = window.data.mapFiltersElement.querySelector('#filter-wifi');
+  var dishwasherFilter = window.data.mapFiltersElement.querySelector('#filter-dishwasher');
+  var parkingFilter = window.data.mapFiltersElement.querySelector('#filter-parking');
+  var washerFilter = window.data.mapFiltersElement.querySelector('#filter-washer');
+  var elevatorFilter = window.data.mapFiltersElement.querySelector('#filter-elevator');
+  var conditionerFilter = window.data.mapFiltersElement.querySelector('#filter-conditioner');
+  window.optionalOffers = [];
+  var HousingPrice = {
+    MAX: 50000,
+    MIN: 10000
+  };
 
-    var typeCallback = function (housing) {
+  var CbForFilters = {
+    typeCb: function (housing) {
       if (typeFilter.value === 'any') {
         return true;
       } else {
         return housing.offer.type === typeFilter.value;
       }
-    };
+    },
 
-    var priceCallback = function (housing) {
+    priceCb: function (housing) {
       if (priceFilter.value === 'any') {
         return true;
       } else if (priceFilter.value === 'middle') {
-        return housing.offer.price < 50000 && housing.offer.price > 10000;
+        return housing.offer.price < HousingPrice.MAX && housing.offer.price > HousingPrice.MIN;
       } else if (priceFilter.value === 'low') {
-        return housing.offer.price < 10000;
+        return housing.offer.price < HousingPrice.MIN;
       } else {
-        return housing.offer.price >= 50000;
+        return housing.offer.price >= HousingPrice.MAX;
       }
-    };
+    },
 
-    var roomCallback = function (housing) {
+    roomCb: function (housing) {
       if (roomsFilter.value === 'any') {
         return true;
       } else {
         return housing.offer.rooms === +roomsFilter.value;
       }
-    };
+    },
 
-    var guestCallback = function (housing) {
+    guestCb: function (housing) {
       if (guestsFilter.value === 'any') {
         return true;
       } else {
         return housing.offer.guests === +guestsFilter.value;
       }
-    };
+    },
 
-    var wifiCallback = function (housing) {
-      if (wifiFilter.checked === true) {
+    wifiCb: function (housing) {
+      if (wifiFilter.checked) {
         return housing.offer.features.indexOf('wifi') !== -1;
       } else {
         return true;
       }
-    };
+    },
 
-    var dishwasherCallback = function (housing) {
-      if (dishwasherFilter.checked === true) {
+    dishwasherCb: function (housing) {
+      if (dishwasherFilter.checked) {
         return housing.offer.features.indexOf('dishwasher') !== -1;
       } else {
         return true;
       }
-    };
+    },
 
-    var parkingCallback = function (housing) {
-      if (parkingFilter.checked === true) {
+    parkingCb: function (housing) {
+      if (parkingFilter.checked) {
         return housing.offer.features.indexOf('parking') !== -1;
       } else {
         return true;
       }
-    };
+    },
 
-    var washerCallback = function (housing) {
-      if (washerFilter.checked === true) {
+    washerCb: function (housing) {
+      if (washerFilter.checked) {
         return housing.offer.features.indexOf('washer') !== -1;
       } else {
         return true;
       }
-    };
+    },
 
-    var elevatorCallback = function (housing) {
-      if (elevatorFilter.checked === true) {
+    elevatorCb: function (housing) {
+      if (elevatorFilter.checked) {
         return housing.offer.features.indexOf('elevator') !== -1;
       } else {
         return true;
       }
-    };
+    },
 
-    var conditionerCallback = function (housing) {
-      if (conditionerFilter.checked === true) {
+    conditionerCb: function (housing) {
+      if (conditionerFilter.checked) {
         return housing.offer.features.indexOf('conditioner') !== -1;
       } else {
         return true;
       }
-    };
+    }
+  };
 
-    var showFilteredButtons = function () {
-      var pinsCollection = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-      var pinsContainer = document.querySelector('.map__pins');
-      for (var i = 0; i < pinsCollection.length; i++) {
-        pinsContainer.removeChild(pinsCollection[i]);
-      }
-      if (window.data.mapElement.contains(window.data.mapElement.querySelector('.map__card'))) {
-        window.utilities.removeCardElement();
-      }
-      window.insertButtons(window.optionalOffers.slice().filter(function (housing) {
-        return typeCallback(housing) && priceCallback(housing) && roomCallback(housing) && guestCallback(housing) && wifiCallback(housing) && dishwasherCallback(housing) && parkingCallback(housing) && washerCallback(housing) && elevatorCallback(housing) && conditionerCallback(housing);
-      }));
-    };
+  var showFilteredButtons = function () {
+    window.utilities.removePinCollection();
+    if (window.data.mapElement.contains(window.data.mapElement.querySelector('.map__card'))) {
+      window.utilities.removeCardElement();
+    }
+    window.insertButtons(window.optionalOffers.slice().filter(function (housing) {
+      return CbForFilters.typeCb(housing) && CbForFilters.priceCb(housing) && CbForFilters.roomCb(housing) && CbForFilters.guestCb(housing) && CbForFilters.wifiCb(housing) && CbForFilters.dishwasherCb(housing) && CbForFilters.parkingCb(housing) && CbForFilters.washerCb(housing) && CbForFilters.elevatorCb(housing) && CbForFilters.conditionerCb(housing);
+    }));
+  };
 
-    mapFilters.addEventListener('change', function (evt) {
+  window.filterButtons = function () {
+    window.data.mapFiltersElement.addEventListener('change', function (evt) {
       if (evt.target.tagName.toLowerCase() === 'input' ||
       evt.target.tagName.toLowerCase() === 'select') {
         showFilteredButtons();
@@ -121,5 +122,7 @@
       }
     });
   };
+
   window.filterButtons();
+
 })();
