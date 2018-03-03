@@ -48,10 +48,6 @@
   };
 
   window.utilities = {
-    getRandomQuantity: function (max, min) {
-      return (Math.round(Math.random() * (max - min) + min));
-    },
-
     sortArray: function (arr) {
       var index;
       for (var i = 0; i <= arr.length - 1; i++) {
