@@ -3,9 +3,9 @@
 (function () {
   var activeArea = document.querySelector('.map__pins');
   var maxX = activeArea.clientWidth;
-  var maxY = 500;
-  var minX = 0;
-  var minY = 150;
+  var MAX_Y = 500;
+  var MIN_X = 0;
+  var MIN_Y = 150;
   var startX;
   var startY;
   var shiftX;
@@ -23,12 +23,12 @@
     var moveY = y - startY;
     var currentX = shiftX + moveX;
     var currentY = shiftY + moveY;
-    if (currentX <= maxX && currentX >= minX) {
+    if (currentX <= maxX && currentX >= MIN_X) {
       shiftX = currentX;
       window.data.pinMainElement.style.left = shiftX + 'px';
       startX = x;
     }
-    if (currentY <= maxY && currentY >= minY) {
+    if (currentY <= MAX_Y && currentY >= MIN_Y) {
       shiftY = currentY;
       window.data.pinMainElement.style.top = shiftY + 'px';
       startY = y;
