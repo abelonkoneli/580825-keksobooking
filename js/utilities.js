@@ -2,16 +2,15 @@
 'use strict';
 
 (function () {
-  var PinMainValues = {
+  var DEBOUNCE_INTERVAL = 500;
+  var ERROR_CLOSE_TIMEOUT = 1700;
+  var pinMainValues = {
     WIDTH: 65,
     HEIGHT: 65,
     AFTER_HEIGHT: 22,
     Z_INDEX: 999
   };
-
-  var DEBOUNCE_INTERVAL = 500;
   var lastTimeout;
-  var ERROR_CLOSE_TIMEOUT = 1700;
 
   var resetFields = function (el) {
     var checkboxes = el.querySelectorAll('input[type = "checkbox"]');
@@ -33,7 +32,7 @@
   };
 
   var stylizeError = function (el, errorMessage) {
-    el.style = 'z-index: ' + PinMainValues.Z_INDEX + '; ' + 'margin: 0 auto; text-align: center; background-color: white;';
+    el.style = 'z-index: ' + pinMainValues.Z_INDEX + '; ' + 'margin: 0 auto; text-align: center; background-color: white;';
     el.style.position = 'fixed';
     el.style.left = '0';
     el.style.right = '0';
@@ -75,8 +74,8 @@
         window.data.Notice.submitBtnElement.removeAttribute('disabled');
         window.data.Notice.addressElement.setAttribute('readonly', true);
         window.backend.load(window.utilities.successLoadHandler, window.utilities.errorLoadHandler);
-        window.data.Notice.addressElement.value = ((window.data.pinMainElement.offsetLeft + PinMainValues.WIDTH / 2) + ', ' + (window.data.pinMainElement.offsetTop + PinMainValues.HEIGHT + PinMainValues.AFTER_HEIGHT));
-        window.data.pinMainElement.style.zIndex = PinMainValues.Z_INDEX;
+        window.data.Notice.addressElement.value = ((window.data.pinMainElement.offsetLeft + pinMainValues.WIDTH / 2) + ', ' + (window.data.pinMainElement.offsetTop + pinMainValues.HEIGHT + pinMainValues.AFTER_HEIGHT));
+        window.data.pinMainElement.style.zIndex = pinMainValues.Z_INDEX;
       }
     },
 
@@ -94,7 +93,7 @@
       window.data.Notice.formElement.classList.add('notice__form--disabled');
       document.querySelector('.form__element--submit').removeAttribute('disabled');
       window.data.mapElement.classList.add('map--faded');
-      window.data.Notice.addressElement.value = (window.data.pinMainElement.offsetLeft + PinMainValues.WIDTH / 2) + ', ' + (window.data.pinMainElement.offsetTop + (PinMainValues.HEIGHT + PinMainValues.AFTER_HEIGHT) / 2);
+      window.data.Notice.addressElement.value = (window.data.pinMainElement.offsetLeft + pinMainValues.WIDTH / 2) + ', ' + (window.data.pinMainElement.offsetTop + (pinMainValues.HEIGHT + pinMainValues.AFTER_HEIGHT) / 2);
     },
 
     removeCardElement: function () {
@@ -103,7 +102,7 @@
     },
 
     cardEscKeydownHandler: function (evt) {
-      if (evt.keyCode === window.data.Keycode.ESC) {
+      if (evt.keyCode === window.data.keycode.ESC) {
         window.utilities.removeCardElement();
       }
     },
