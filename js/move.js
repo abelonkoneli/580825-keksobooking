@@ -13,8 +13,8 @@
 
   window.utilities.disableNoticeForm();
   var resetData = function (x, y) {
-    shiftX = window.data.pinMain.offsetLeft;
-    shiftY = window.data.pinMain.offsetTop;
+    shiftX = window.data.pinMainElement.offsetLeft;
+    shiftY = window.data.pinMainElement.offsetTop;
     startX = x;
     startY = y;
   };
@@ -25,12 +25,12 @@
     var currentY = shiftY + moveY;
     if (currentX <= maxX && currentX >= minX) {
       shiftX = currentX;
-      window.data.pinMain.style.left = shiftX + 'px';
+      window.data.pinMainElement.style.left = shiftX + 'px';
       startX = x;
     }
     if (currentY <= maxY && currentY >= minY) {
       shiftY = currentY;
-      window.data.pinMain.style.top = shiftY + 'px';
+      window.data.pinMainElement.style.top = shiftY + 'px';
       startY = y;
     }
   };
@@ -45,11 +45,11 @@
   var documentMouseupHandler = function () {
     document.removeEventListener('mousemove', documentMousemoveHandler);
     document.removeEventListener('mouseup', documentMouseupHandler);
-    if (window.data.noticeForm.classList.contains('notice__form--disabled')) {
+    if (window.data.Notice.formElement.classList.contains('notice__form--disabled')) {
       window.utilities.enableNoticeForm();
     }
-    window.data.noticeAddress.value = shiftX + ', ' + shiftY;
+    window.data.Notice.addressElement.value = shiftX + ', ' + shiftY;
   };
-  window.data.pinMain.addEventListener('mousedown', pinMainMousedownHandler);
+  window.data.pinMainElement.addEventListener('mousedown', pinMainMousedownHandler);
 
 })();
