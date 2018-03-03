@@ -1,15 +1,15 @@
 'use strict';
 
 (function () {
+  var TIMEOUT = 10000;
   var Code = {
     SUCCESS: 200,
     CASHED: 304
   };
-  var Url = {
-    LOAD: 'https://js.dump.academy/keksobooking/data',
-    SEND: 'https://js.dump.academy/keksobooking'
+  var url = {
+    load: 'https://js.dump.academy/keksobooking/data',
+    send: 'https://js.dump.academy/keksobooking'
   };
-  var TIMEOUT = 10000;
   window.backend = {
     load: function (onLoad, onError) {
       var xhr = new XMLHttpRequest();
@@ -31,7 +31,7 @@
 
       xhr.timeout = TIMEOUT;
 
-      xhr.open('GET', Url.LOAD);
+      xhr.open('GET', url.load);
       xhr.send(xhr.response);
     },
     send: function (data, onLoad, onError) {
@@ -54,7 +54,7 @@
 
       xhr.timeout = TIMEOUT;
 
-      xhr.open('POST', Url.SEND);
+      xhr.open('POST', url.send);
       xhr.send(data);
     }
   };
