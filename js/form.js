@@ -35,31 +35,31 @@
   var typePriceClickHandler = function (evt) {
     var typeMinPrices = [
       {
-        TYPE: 'bungalo',
-        PRICE: '0'
+        type: 'bungalo',
+        price: '0'
       },
       {
-        TYPE: 'flat',
-        PRICE: '1000'
+        type: 'flat',
+        price: '1000'
       },
       {
-        TYPE: 'house',
-        PRICE: '5000'
+        type: 'house',
+        price: '5000'
       },
       {
-        TYPE: 'palace',
-        PRICE: '10000'
+        type: 'palace',
+        price: '10000'
       }
     ];
 
-    if (window.data.Notice.typeElement.value === typeMinPrices[1].TYPE) {
-      window.data.Notice.priceElement.min = typeMinPrices[1].PRICE;
-    } else if (window.data.Notice.typeElement.value === typeMinPrices[2].TYPE) {
-      window.data.Notice.priceElement.min = typeMinPrices[2].PRICE;
-    } else if (window.data.Notice.typeElement.value === typeMinPrices[3].TYPE) {
-      window.data.Notice.priceElement.min = typeMinPrices[3].PRICE;
+    if (window.data.Notice.typeElement.value === typeMinPrices[1].type) {
+      window.data.Notice.priceElement.min = typeMinPrices[1].price;
+    } else if (window.data.Notice.typeElement.value === typeMinPrices[2].type) {
+      window.data.Notice.priceElement.min = typeMinPrices[2].price;
+    } else if (window.data.Notice.typeElement.value === typeMinPrices[3].type) {
+      window.data.Notice.priceElement.min = typeMinPrices[3].price;
     } else {
-      window.data.Notice.priceElement.min = typeMinPrices[0].PRICE;
+      window.data.Notice.priceElement.min = typeMinPrices[0].price;
     }
     handleInvalidity(evt);
   };
@@ -87,7 +87,7 @@
   };
 
   var resetKeypressHandler = function (evt) {
-    if (evt.keycode === window.data.Keycode.ENTER) {
+    if (evt.keycode === window.data.keycode.ENTER) {
       resetClickHandler();
     }
   };
