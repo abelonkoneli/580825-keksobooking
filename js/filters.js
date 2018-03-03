@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var housingPrice = {
+    MAX: 50000,
+    MIN: 10000
+  };
   var typeFilter = window.data.mapFiltersElement.querySelector('#housing-type');
   var priceFilter = window.data.mapFiltersElement.querySelector('#housing-price');
   var roomsFilter = window.data.mapFiltersElement.querySelector('#housing-rooms');
@@ -12,10 +16,6 @@
   var elevatorFilter = window.data.mapFiltersElement.querySelector('#filter-elevator');
   var conditionerFilter = window.data.mapFiltersElement.querySelector('#filter-conditioner');
   window.optionalOffers = [];
-  var HousingPrice = {
-    MAX: 50000,
-    MIN: 10000
-  };
 
   var CbForFilters = {
     typeCb: function (housing) {
@@ -30,11 +30,11 @@
       if (priceFilter.value === 'any') {
         return true;
       } else if (priceFilter.value === 'middle') {
-        return housing.offer.price < HousingPrice.MAX && housing.offer.price > HousingPrice.MIN;
+        return housing.offer.price < housingPrice.MAX && housing.offer.price > housingPrice.MIN;
       } else if (priceFilter.value === 'low') {
-        return housing.offer.price < HousingPrice.MIN;
+        return housing.offer.price < housingPrice.MIN;
       } else {
-        return housing.offer.price >= HousingPrice.MAX;
+        return housing.offer.price >= housingPrice.MAX;
       }
     },
 
