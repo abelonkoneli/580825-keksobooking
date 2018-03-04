@@ -17,15 +17,15 @@
   var conditionerFilter = window.data.mapFiltersElement.querySelector('#filter-conditioner');
   window.optionalOffers = [];
 
-  var filtersCallback = {
-    typeCallback: function (housing) {
+  var filters = {
+    type: function (housing) {
       if (typeFilter.value === 'any') {
         return true;
       }
       return housing.offer.type === typeFilter.value;
     },
 
-    priceCallback: function (housing) {
+    price: function (housing) {
       if (priceFilter.value === 'any') {
         return true;
       } else if (priceFilter.value === 'middle') {
@@ -36,56 +36,56 @@
       return housing.offer.price >= housingPrice.MAX;
     },
 
-    roomCallback: function (housing) {
+    room: function (housing) {
       if (roomsFilter.value === 'any') {
         return true;
       }
       return housing.offer.rooms === +roomsFilter.value;
     },
 
-    guestCallback: function (housing) {
+    guest: function (housing) {
       if (guestsFilter.value === 'any') {
         return true;
       }
       return housing.offer.guests === +guestsFilter.value;
     },
 
-    wifiCallback: function (housing) {
+    wifi: function (housing) {
       if (wifiFilter.checked) {
         return housing.offer.features.indexOf('wifi') !== -1;
       }
       return true;
     },
 
-    dishwasherCallback: function (housing) {
+    dishwasher: function (housing) {
       if (dishwasherFilter.checked) {
         return housing.offer.features.indexOf('dishwasher') !== -1;
       }
       return true;
     },
 
-    parkingCallback: function (housing) {
+    parking: function (housing) {
       if (parkingFilter.checked) {
         return housing.offer.features.indexOf('parking') !== -1;
       }
       return true;
     },
 
-    washerCallback: function (housing) {
+    washer: function (housing) {
       if (washerFilter.checked) {
         return housing.offer.features.indexOf('washer') !== -1;
       }
       return true;
     },
 
-    elevatorCallback: function (housing) {
+    elevator: function (housing) {
       if (elevatorFilter.checked) {
         return housing.offer.features.indexOf('elevator') !== -1;
       }
       return true;
     },
 
-    conditionerCallback: function (housing) {
+    conditioner: function (housing) {
       if (conditionerFilter.checked) {
         return housing.offer.features.indexOf('conditioner') !== -1;
       }
@@ -99,7 +99,7 @@
       window.utilities.removeCardElementHandler();
     }
     window.insertButtons(window.optionalOffers.slice().filter(function (housing) {
-      return filtersCallback.typeCallback(housing) && filtersCallback.priceCallback(housing) && filtersCallback.roomCallback(housing) && filtersCallback.guestCallback(housing) && filtersCallback.wifiCallback(housing) && filtersCallback.dishwasherCallback(housing) && filtersCallback.parkingCallback(housing) && filtersCallback.washerCallback(housing) && filtersCallback.elevatorCallback(housing) && filtersCallback.conditionerCallback(housing);
+      return filters.type(housing) && filters.price(housing) && filters.room(housing) && filters.guest(housing) && filters.wifi(housing) && filters.dishwasher(housing) && filters.parking(housing) && filters.washer(housing) && filters.elevator(housing) && filters.conditioner(housing);
     }));
   };
 
