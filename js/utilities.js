@@ -26,7 +26,7 @@
   };
 
   var stylizeError = function (element, errorMessage) {
-    element.style = 'z-index: ' + pinMainValues.Z_INDEX + '; ' + 'margin: 0 auto; text-align: center; background-color: white;';
+    element.style = 'z-index: ' + window.data.pinMainValues.Z_INDEX + '; ' + 'margin: 0 auto; text-align: center; background-color: white;';
     element.style.position = 'fixed';
     element.style.left = '0';
     element.style.right = '0';
@@ -62,7 +62,8 @@
           window.data.notice.fieldsets[i].disabled = false;
         }
         window.data.notice.submitButtonElement.disabled = false;
-        window.data.notice.addressElement.readonly = true;
+        window.data.notice.addressElement.readOnly = true;
+        window.data.notice.priceElement.min = 0;
         window.backend.load(window.utilities.successLoadHandler, window.utilities.errorLoadHandler);
         window.data.pinMainElement.style.zIndex = window.data.pinMainValues.Z_INDEX;
       }
@@ -99,13 +100,28 @@
       }
     },
 
-     submitInvalidClickHandler: function () {
-    roomsCapacityClickHandler();
-    var invalidFields = document.querySelectorAll('input:invalid, select:invalid');
-    for (var i = 0; i < invalidFields.length; i++) {
-      invalidFields[i].classList.add('bordered');
-    }
-  },
+    submitInvalidClickHandler: function () {
+      window.utilities.roomsCapacityClickHandler();
+      var invalidFields = document.querySelectorAll('input:invalid, select:invalid');
+      for (var i = 0; i < invalidFields.length; i++) {
+        invalidFields[i].classList.add('bordered');
+      }
+    },
+    roomsCapacityClickHandler: function () {
+      var guestsQuantity = {
+        MAX: 100,
+        MIN: 0
+      };
+      if (+window.data.notice.roomNumberElement.value < +window.data.notice.capacityElement.value) {
+        window.data.notice.capacityElement.setCustomValidity('Гостей не может быть больше, чем комнат');
+      } else if (+window.data.notice.roomNumberElement.value === guestsQuantity.MAX && +window.data.notice.capacityElement.value !== guestsQuantity.MIN) {
+        window.data.notice.capacityElement.setCustomValidity('Сто комнат не рассчитаны на гостей');
+      } else if (+window.data.notice.roomNumberElement.value !== guestsQuantity.MAX && +window.data.notice.capacityElement.value === guestsQuantity.MIN) {
+        window.data.notice.capacityElement.setCustomValidity('Гостей не может быть меньше одного');
+      } else {
+        window.data.notice.capacityElement.setCustomValidity('');
+      }
+    },
 
     successLoadHandler: function (data) {
       window.optionalOffers = data;
@@ -131,7 +147,7 @@
     },
 
     removePins: function () {
-      var pins= window.data.mapElement.querySelectorAll('.map__pin:not(.map__pin--main)');
+      var pins = window.data.mapElement.querySelectorAll('.map__pin:not(.map__pin--main)');
       for (var i = 0; i < pins.length; i++) {
         document.querySelector('.map__pins').removeChild(pins[i]);
       }
