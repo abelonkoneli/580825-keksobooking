@@ -35,6 +35,9 @@
   };
   var pinMainMousedownHandler = function (evt) {
     resetData(evt.clientX, evt.clientY);
+    if (window.data.mapElement.contains(document.querySelector('.map__card'))) {
+      window.utilities.removeCardElementHandler();
+    }
     document.addEventListener('mousemove', documentMousemoveHandler);
     document.addEventListener('mouseup', documentMouseupHandler);
   };
@@ -44,10 +47,10 @@
   var documentMouseupHandler = function () {
     document.removeEventListener('mousemove', documentMousemoveHandler);
     document.removeEventListener('mouseup', documentMouseupHandler);
-    if (window.data.Notice.formElement.classList.contains('notice__form--disabled')) {
-      window.utilities.enableNoticeForm();
+    if (window.data.notice.formElement.classList.contains('notice__form--disabled')) {
+      window.utilities.enableNoticeFormHAndler();
     }
-    window.data.Notice.addressElement.value = shiftX + ', ' + shiftY;
+    window.data.notice.addressElement.value = ((window.data.pinMainElement.offsetLeft) + ', ' + (window.data.pinMainElement.offsetTop + window.data.pinMainValues.HEIGHT + window.data.pinMainValues.AFTER_HEIGHT));
   };
   window.data.pinMainElement.addEventListener('mousedown', pinMainMousedownHandler);
 
