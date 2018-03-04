@@ -19,27 +19,11 @@
   var capacityClickHandler = function (evt) {
     manageInvalidity(evt);
   };
-  var guestsQuantity = {
-    MAX: 100,
-    MIN: 0
-  };
 
   var removeBorder = function () {
     var invalidFields = document.querySelectorAll('input:invalid, select:invalid');
     for (var i = 0; i < invalidFields.length; i++) {
       invalidFields[i].classList.remove('bordered');
-    }
-  };
-
-  var roomsCapacityClickHandler = function () {
-    if (+window.data.notice.roomNumberElement.value < +window.data.notice.capacityElement.value) {
-      window.data.notice.capacityElement.setCustomValidity('Гостей не может быть больше, чем комнат');
-    } else if (+window.data.notice.roomNumberElement.value === guestsQuantity.MAX && +window.data.notice.capacityElement.value !== guestsQuantity.MIN) {
-      window.data.notice.capacityElement.setCustomValidity('Сто комнат не рассчитаны на гостей');
-    } else if (+window.data.notice.roomNumberElement.value !== guestsQuantity.MAX && +window.data.notice.capacityElement.value === guestsQuantity.MIN) {
-      window.data.notice.capacityElement.setCustomValidity('Гостей не может быть меньше одного');
-    } else {
-      window.data.notice.capacityElement.setCustomValidity('');
     }
   };
 
@@ -69,9 +53,8 @@
       window.data.notice.priceElement.min = typeMinPrices[2].price;
     } else if (window.data.notice.typeElement.value === typeMinPrices[3].type) {
       window.data.notice.priceElement.min = typeMinPrices[3].price;
-    } else {
-      window.data.notice.priceElement.min = typeMinPrices[0].price;
     }
+
     manageInvalidity(evt);
   };
 
@@ -83,14 +66,6 @@
   var timeOutClickHandler = function () {
     window.data.notice.timeInElement.value = window.data.notice.timeOutElement.value;
     window.data.notice.timeOutElement.title = 'При изменении времени ВЫЕЗДА меняется время заезда и наоборот';
-  };
-
-  var submitInvalidClickHandler = function () {
-    roomsCapacityClickHandler();
-    var invalidFields = document.querySelectorAll('input:invalid, select:invalid');
-    for (var i = 0; i < invalidFields.length; i++) {
-      invalidFields[i].classList.add('bordered');
-    }
   };
 
   var resetClickHandler = function (evt) {
@@ -105,10 +80,10 @@
     }
   };
 
-  window.data.notice.submitButtonElement.addEventListener('click', submitInvalidClickHandler);
+  window.data.notice.submitButtonElement.addEventListener('click', window.utilities.submitInvalidClickHandler);
   window.data.notice.capacityElement.addEventListener('click', capacityClickHandler);
-  window.data.notice.capacityElement.addEventListener('click', roomsCapacityClickHandler);
-  window.data.notice.roomNumberElement.addEventListener('click', roomsCapacityClickHandler);
+  window.data.notice.capacityElement.addEventListener('click', window.utilities.roomsCapacityClickHandler);
+  window.data.notice.roomNumberElement.addEventListener('click', window.utilities.roomsCapacityClickHandler);
   window.data.notice.titleElement.addEventListener('click', titleClickHandler);
   window.data.notice.priceElement.addEventListener('click', typePriceClickHandler);
   window.data.notice.typeElement.addEventListener('click', typePriceClickHandler);
