@@ -17,99 +17,89 @@
   var conditionerFilter = window.data.mapFiltersElement.querySelector('#filter-conditioner');
   window.optionalOffers = [];
 
-  var CbForFilters = {
-    typeCb: function (housing) {
+  var filtersCallback = {
+    typeCallback: function (housing) {
       if (typeFilter.value === 'any') {
         return true;
-      } else {
-        return housing.offer.type === typeFilter.value;
       }
+      return housing.offer.type === typeFilter.value;
     },
 
-    priceCb: function (housing) {
+    priceCallback: function (housing) {
       if (priceFilter.value === 'any') {
         return true;
       } else if (priceFilter.value === 'middle') {
         return housing.offer.price < housingPrice.MAX && housing.offer.price > housingPrice.MIN;
       } else if (priceFilter.value === 'low') {
         return housing.offer.price < housingPrice.MIN;
-      } else {
-        return housing.offer.price >= housingPrice.MAX;
       }
+      return housing.offer.price >= housingPrice.MAX;
     },
 
-    roomCb: function (housing) {
+    roomCallback: function (housing) {
       if (roomsFilter.value === 'any') {
         return true;
-      } else {
-        return housing.offer.rooms === +roomsFilter.value;
       }
+      return housing.offer.rooms === +roomsFilter.value;
     },
 
-    guestCb: function (housing) {
+    guestCallback: function (housing) {
       if (guestsFilter.value === 'any') {
         return true;
-      } else {
-        return housing.offer.guests === +guestsFilter.value;
       }
+      return housing.offer.guests === +guestsFilter.value;
     },
 
-    wifiCb: function (housing) {
+    wifiCallback: function (housing) {
       if (wifiFilter.checked) {
         return housing.offer.features.indexOf('wifi') !== -1;
-      } else {
-        return true;
       }
+      return true;
     },
 
-    dishwasherCb: function (housing) {
+    dishwasherCallback: function (housing) {
       if (dishwasherFilter.checked) {
         return housing.offer.features.indexOf('dishwasher') !== -1;
-      } else {
-        return true;
       }
+      return true;
     },
 
-    parkingCb: function (housing) {
+    parkingCallback: function (housing) {
       if (parkingFilter.checked) {
         return housing.offer.features.indexOf('parking') !== -1;
-      } else {
-        return true;
       }
+      return true;
     },
 
-    washerCb: function (housing) {
+    washerCallback: function (housing) {
       if (washerFilter.checked) {
         return housing.offer.features.indexOf('washer') !== -1;
-      } else {
-        return true;
       }
+      return true;
     },
 
-    elevatorCb: function (housing) {
+    elevatorCallback: function (housing) {
       if (elevatorFilter.checked) {
         return housing.offer.features.indexOf('elevator') !== -1;
-      } else {
-        return true;
       }
+      return true;
     },
 
-    conditionerCb: function (housing) {
+    conditionerCallback: function (housing) {
       if (conditionerFilter.checked) {
         return housing.offer.features.indexOf('conditioner') !== -1;
-      } else {
-        return true;
       }
+      return true;
     }
   };
 
   var showFilteredButtons = function () {
-    window.utilities.removePinCollection();
+    window.utilities.removePins();
     if (window.data.mapElement.contains(window.data.mapElement.querySelector('.map__card'))) {
-      window.utilities.removeCardElement();
+      window.utilities.removeCardElementHandler();
     }
     window.insertButtons(window.optionalOffers.slice().filter(function (housing) {
-      return CbForFilters.typeCb(housing) && CbForFilters.priceCb(housing) && CbForFilters.roomCb(housing) && CbForFilters.guestCb(housing) && CbForFilters.wifiCb(housing) && CbForFilters.dishwasherCb(housing) && CbForFilters.parkingCb(housing) && CbForFilters.washerCb(housing) && CbForFilters.elevatorCb(housing) && CbForFilters.conditionerCb(housing);
+      return filtersCallback.typeCallback(housing) && filtersCallback.priceCallback(housing) && filtersCallback.roomCallback(housing) && filtersCallback.guestCallback(housing) && filtersCallback.wifiCallback(housing) && filtersCallback.dishwasherCallback(housing) && filtersCallback.parkingCallback(housing) && filtersCallback.washerCallback(housing) && filtersCallback.elevatorCallback(housing) && filtersCallback.conditionerCallback(housing);
     }));
   };
 
@@ -117,12 +107,9 @@
     window.data.mapFiltersElement.addEventListener('change', function (evt) {
       if (evt.target.tagName.toLowerCase() === 'input' ||
       evt.target.tagName.toLowerCase() === 'select') {
-        showFilteredButtons();
         window.utilities.debounce(showFilteredButtons);
       }
     });
   };
-
   window.filterButtons();
-
 })();
