@@ -5,34 +5,34 @@
   var MAX_PINS = 5;
   var insertCardElement = function (proposal) {
     if (window.data.mapElement.contains(window.data.mapElement.querySelector('.map__card'))) {
-      window.utilities.removeCardElement();
+      window.utilities.removeCardElementHandler();
     }
     window.data.mapElement.insertBefore(window.createCardElement(proposal), window.data.mapElement.querySelector('.map__filters-container'));
     document.addEventListener('keydown', window.utilities.cardEscKeydownHandler);
-    var cardCloseElement = document.querySelector('.popup__close');
-    cardCloseElement.addEventListener('click', window.utilities.removeCardElement);
+    var cardCloseElement = window.data.mapElement.querySelector('.popup__close');
+    cardCloseElement.addEventListener('click', window.utilities.removeCardElementHandler);
   };
 
-  var buttonClickOuterHandler = function (btn, proposal) {
+  var buttonClickOuterHandler = function (pin, proposal) {
     var buttonClickInnerHandler = function () {
       insertCardElement(proposal);
     };
-    return btn.addEventListener('click', buttonClickInnerHandler);
+    return pin.addEventListener('click', buttonClickInnerHandler);
   };
 
-  window.data.pinMainElement.addEventListener('mouseup', window.utilities.enableNoticeForm);
-  window.insertButtons = function (data) {
-    var pinCollection = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < pinCollection; i++) {
-      document.querySelector('.map__pins').removeChild(pinCollection[i]);
+  window.data.pinMainElement.addEventListener('mouseup', window.utilities.enableNoticeFormHandler);
+  window.insertButtons = function (items) {
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < pins; i++) {
+      document.querySelector('.map__pins').removeChild(pins[i]);
     }
     var fragment = document.createDocumentFragment();
-    var btn;
-    window.utilities.sortArray(data);
-    for (i = 0; i < Math.min(MAX_PINS, data.length); i++) {
-      btn = window.createButtonElement(data[i]);
-      buttonClickOuterHandler(btn, data[i]);
-      fragment.appendChild(btn);
+    var pin;
+    window.utilities.sortArray(items);
+    for (i = 0; i < Math.min(MAX_PINS, items.length); i++) {
+      pin = window.createButtonElement(items[i]);
+      buttonClickOuterHandler(pin, items[i]);
+      fragment.appendChild(pin);
     }
     return document.querySelector('.map__pins').appendChild(fragment);
   };
