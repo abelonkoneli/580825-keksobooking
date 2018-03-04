@@ -4,20 +4,14 @@
 (function () {
   var DEBOUNCE_INTERVAL = 500;
   var ERROR_CLOSE_TIMEOUT = 1700;
-  var pinMainValues = {
-    WIDTH: 65,
-    HEIGHT: 65,
-    AFTER_HEIGHT: 22,
-    Z_INDEX: 999
-  };
   var lastTimeout;
 
-  var resetFields = function (el) {
-    var checkboxes = el.querySelectorAll('input[type = "checkbox"]');
+  var resetFields = function (element) {
+    var checkboxes = element.querySelectorAll('input[type = "checkbox"]');
     for (var i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = false;
     }
-    var selects = el.querySelectorAll('select');
+    var selects = element.querySelectorAll('select');
     for (i = 0; i < selects.length; i++) {
       selects[i].selectedIndex = 0;
     }
@@ -25,83 +19,93 @@
 
   var updateNoticeFields = function () {
     window.data.pinMainElement.style = '';
-    window.data.Notice.titleElement.value = '';
-    window.data.Notice.priceElement.value = '';
-    window.data.Notice.formElement.querySelector('#description').value = '';
-    resetFields(window.data.Notice.formElement);
+    window.data.notice.titleElement.value = '';
+    window.data.notice.priceElement.value = '';
+    window.data.notice.formElement.querySelector('#description').value = '';
+    resetFields(window.data.notice.formElement);
   };
 
-  var stylizeError = function (el, errorMessage) {
-    el.style = 'z-index: ' + pinMainValues.Z_INDEX + '; ' + 'margin: 0 auto; text-align: center; background-color: white;';
-    el.style.position = 'fixed';
-    el.style.left = '0';
-    el.style.right = '0';
-    el.style.top = '45%';
-    el.style.bottom = '48%';
-    el.style.fontSize = '30px';
-    el.textContent = errorMessage;
+  var stylizeError = function (element, errorMessage) {
+    element.style = 'z-index: ' + pinMainValues.Z_INDEX + '; ' + 'margin: 0 auto; text-align: center; background-color: white;';
+    element.style.position = 'fixed';
+    element.style.left = '0';
+    element.style.right = '0';
+    element.style.top = '45%';
+    element.style.bottom = '48%';
+    element.style.fontSize = '30px';
+    element.textContent = errorMessage;
     setTimeout(function () {
-      el.style.display = 'none';
+      element.style.display = 'none';
     },
     ERROR_CLOSE_TIMEOUT);
-    return el;
+    return element;
   };
 
   window.utilities = {
-    sortArray: function (arr) {
+    sortArray: function (anyArray) {
       var index;
-      for (var i = 0; i <= arr.length - 1; i++) {
-        index = Math.floor(Math.random() * (arr.length - i));
-        arr.push(arr[index]);
-        arr.splice(index, 1);
+      for (var i = 0; i <= anyArray.length - 1; i++) {
+        index = Math.floor(Math.random() * (anyArray.length - i));
+        anyArray.push(anyArray[index]);
+        anyArray.splice(index, 1);
       }
-      return arr;
+      return anyArray;
     },
 
-    enableNoticeForm: function () {
-      if (window.data.Notice.formElement.classList.contains('notice__form--disabled')) {
-        window.data.Notice.formElement.classList.remove('notice__form--disabled');
+    enableNoticeFormHandler: function () {
+      if (window.data.notice.formElement.classList.contains('notice__form--disabled')) {
+        window.data.notice.formElement.classList.remove('notice__form--disabled');
         if (window.data.mapElement.classList.contains('map--faded')) {
           window.data.mapElement.classList.remove('map--faded');
         }
-        for (var i = 0; i < window.data.Notice.collection.length; i++) {
-          window.data.Notice.collection[i].removeAttribute('disabled');
+        for (var i = 0; i < window.data.notice.fieldsets.length; i++) {
+          window.data.notice.fieldsets[i].disabled = false;
         }
-        window.data.Notice.submitBtnElement.removeAttribute('disabled');
-        window.data.Notice.addressElement.setAttribute('readonly', true);
+        window.data.notice.submitButtonElement.disabled = false;
+        window.data.notice.addressElement.readonly = true;
         window.backend.load(window.utilities.successLoadHandler, window.utilities.errorLoadHandler);
-        window.data.Notice.addressElement.value = ((window.data.pinMainElement.offsetLeft + pinMainValues.WIDTH / 2) + ', ' + (window.data.pinMainElement.offsetTop + pinMainValues.HEIGHT + pinMainValues.AFTER_HEIGHT));
-        window.data.pinMainElement.style.zIndex = pinMainValues.Z_INDEX;
+        window.data.pinMainElement.style.zIndex = window.data.pinMainValues.Z_INDEX;
       }
     },
 
     disableNoticeForm: function () {
-      window.utilities.removePinCollection();
+      window.utilities.removePins();
       if (window.data.mapElement.contains(document.querySelector('.map__card'))) {
-        window.utilities.removeCardElement();
+        window.utilities.removeCardElementHandler();
       }
       updateNoticeFields();
       resetFields(window.data.mapFiltersElement);
-      for (var i = 0; i < window.data.Notice.collection.length; i++) {
-        window.data.Notice.collection[i].setAttribute('disabled', true);
+      for (var i = 0; i < window.data.notice.fieldsets.length; i++) {
+        window.data.notice.fieldsets[i].disabled = true;
       }
-      window.data.Notice.submitBtnElement.setAttribute('disabled', true);
-      window.data.Notice.formElement.classList.add('notice__form--disabled');
-      document.querySelector('.form__element--submit').removeAttribute('disabled');
+      window.data.notice.submitButtonElement.disabled = true;
+      window.data.notice.formElement.classList.add('notice__form--disabled');
+      document.querySelector('.form__element--submit').disabled = false;
       window.data.mapElement.classList.add('map--faded');
-      window.data.Notice.addressElement.value = (window.data.pinMainElement.offsetLeft + pinMainValues.WIDTH / 2) + ', ' + (window.data.pinMainElement.offsetTop + (pinMainValues.HEIGHT + pinMainValues.AFTER_HEIGHT) / 2);
+      window.data.notice.addressElement.value = (window.data.pinMainElement.offsetLeft + window.data.pinMainValues.WIDTH / 2) + ', ' + (window.data.pinMainElement.offsetTop + (window.data.pinMainValues.HEIGHT + window.data.pinMainValues.AFTER_HEIGHT) / 2);
+      window.data.notice.submitButtonElement.removeEventListener('click', window.utilities.submitInvalidClickHandler);
     },
 
-    removeCardElement: function () {
+    removeCardElementHandler: function () {
+      var cardCloseElement = window.data.mapElement.querySelector('.popup__close');
+      cardCloseElement.removeEventListener('click', window.utilities.removeCardElementHandler);
       window.data.mapElement.removeChild(window.data.mapElement.querySelector('.map__card'));
       document.removeEventListener('keydown', window.utilities.cardEscKeydownHandler);
     },
 
     cardEscKeydownHandler: function (evt) {
       if (evt.keyCode === window.data.keycode.ESC) {
-        window.utilities.removeCardElement();
+        window.utilities.removeCardElementHandler();
       }
     },
+
+     submitInvalidClickHandler: function () {
+    roomsCapacityClickHandler();
+    var invalidFields = document.querySelectorAll('input:invalid, select:invalid');
+    for (var i = 0; i < invalidFields.length; i++) {
+      invalidFields[i].classList.add('bordered');
+    }
+  },
 
     successLoadHandler: function (data) {
       window.optionalOffers = data;
@@ -122,22 +126,22 @@
     errorSendHandler: function (errorMessage) {
       var errorSendAlert = document.createElement('div');
       stylizeError(errorSendAlert, errorMessage);
-      window.data.Notice.formElement.insertAdjacentElement('afterend', errorSendAlert);
-      window.utilities.disableNoticeForm();
+      window.data.notice.formElement.insertAdjacentElement('afterend', errorSendAlert);
+
     },
 
-    removePinCollection: function () {
-      var pinCollection = window.data.mapElement.querySelectorAll('.map__pin:not(.map__pin--main)');
-      for (var i = 0; i < pinCollection.length; i++) {
-        document.querySelector('.map__pins').removeChild(pinCollection[i]);
+    removePins: function () {
+      var pins= window.data.mapElement.querySelectorAll('.map__pin:not(.map__pin--main)');
+      for (var i = 0; i < pins.length; i++) {
+        document.querySelector('.map__pins').removeChild(pins[i]);
       }
     },
 
-    debounce: function (cb) {
+    debounce: function (x) {
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
-      lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
+      lastTimeout = window.setTimeout(x, DEBOUNCE_INTERVAL);
     }
   };
 })();
