@@ -10,7 +10,6 @@
   var shiftX;
   var shiftY;
 
-  window.utilities.disableNoticeForm();
   var resetData = function (x, y) {
     shiftX = window.data.pinMainElement.offsetLeft;
     shiftY = window.data.pinMainElement.offsetTop;
@@ -48,9 +47,9 @@
     document.removeEventListener('mousemove', documentMousemoveHandler);
     document.removeEventListener('mouseup', documentMouseupHandler);
     if (window.data.notice.formElement.classList.contains('notice__form--disabled')) {
-      window.utilities.enableNoticeFormHAndler();
+      window.utilities.enableNoticeFormHandler();
     }
-    window.data.notice.addressElement.value = ((window.data.pinMainElement.offsetLeft) + ', ' + (window.data.pinMainElement.offsetTop + window.data.pinMainValues.HEIGHT + window.data.pinMainValues.AFTER_HEIGHT));
+    window.data.notice.addressElement.value = window.data.pinMainElement.offsetLeft + ', ' + window.data.pinMainElement.offsetTop;
   };
   window.data.pinMainElement.addEventListener('mousedown', pinMainMousedownHandler);
 
