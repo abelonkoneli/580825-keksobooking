@@ -10,7 +10,7 @@
     pinMainValues: {
       WIDTH: 65,
       HEIGHT: 65,
-      AFTER_HEIGHT: 18,
+      AFTER_HEIGHT: 12,
       Z_INDEX: 999
     },
     mapElement: document.querySelector('.map'),
