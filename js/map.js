@@ -22,14 +22,10 @@
 
   window.data.pinMainElement.addEventListener('mouseup', window.utilities.enableNoticeFormHandler);
   window.insertButtons = function (items) {
-    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < pins; i++) {
-      document.querySelector('.map__pins').removeChild(pins[i]);
-    }
     var fragment = document.createDocumentFragment();
     var pin;
     window.utilities.sortArray(items);
-    for (i = 0; i < Math.min(MAX_PINS, items.length); i++) {
+    for (var i = 0; i < Math.min(MAX_PINS, items.length); i++) {
       pin = window.createButtonElement(items[i]);
       buttonClickOuterHandler(pin, items[i]);
       fragment.appendChild(pin);
