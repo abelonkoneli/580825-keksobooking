@@ -5,9 +5,8 @@
   window.data = {
     ESC: 27,
     pinMainValues: {
-      WIDTH: 65,
       HEIGHT: 65,
-      AFTER_HEIGHT: 12,
+      AFTER_HEIGHT: 14,
       Z_INDEX: 999
     },
     mapElement: document.querySelector('.map'),
