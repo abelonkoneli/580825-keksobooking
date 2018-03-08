@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var TIMEOUT = 10000;
   var Code = {
     SUCCESS: 200,
     CASHED: 304
@@ -9,7 +10,6 @@
     LOAD: 'https://js.dump.academy/keksobooking/data',
     SEND: 'https://js.dump.academy/keksobooking'
   };
-  var TIMEOUT = 10000;
   var treatXhr = function (xhr, onLoad, onError) {
     xhr.addEventListener('load', function () {
       if (xhr.status === Code.SUCCESS || xhr.status === Code.CASHED) {
