@@ -4,6 +4,10 @@
 (function () {
   var DEBOUNCE_INTERVAL = 500;
   var ERROR_CLOSE_TIMEOUT = 1700;
+  var guestsQuantity = {
+    MAX: 100,
+    MIN: 0
+  };
   var lastTimeout;
 
   var resetFields = function (element) {
@@ -95,23 +99,20 @@
     },
 
     cardEscKeydownHandler: function (evt) {
-      if (evt.keyCode === window.data.keycode.ESC) {
+      if (evt.keyCode === window.data.ESC) {
         window.utilities.removeCardElementHandler();
       }
     },
 
     submitInvalidClickHandler: function () {
-      window.utilities.roomsCapacityClickHandler();
+      window.utilities.setCapacityAndRoomsCorrelation();
       var invalidFields = document.querySelectorAll('input:invalid, select:invalid');
       for (var i = 0; i < invalidFields.length; i++) {
         invalidFields[i].classList.add('bordered');
       }
     },
-    roomsCapacityClickHandler: function () {
-      var guestsQuantity = {
-        MAX: 100,
-        MIN: 0
-      };
+
+    setCapacityAndRoomsCorrelation: function () {
       if (+window.data.notice.roomNumberElement.value < +window.data.notice.capacityElement.value) {
         window.data.notice.capacityElement.setCustomValidity('Гостей не может быть больше, чем комнат');
       } else if (+window.data.notice.roomNumberElement.value === guestsQuantity.MAX && +window.data.notice.capacityElement.value !== guestsQuantity.MIN) {
@@ -120,6 +121,7 @@
         window.data.notice.capacityElement.setCustomValidity('Гостей не может быть меньше одного');
       } else {
         window.data.notice.capacityElement.setCustomValidity('');
+        window.data.notice.capacityElement.classList.remove('bordered');
       }
     },
 
@@ -153,11 +155,11 @@
       }
     },
 
-    debounce: function (x) {
+    debounce: function (action) {
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
-      lastTimeout = window.setTimeout(x, DEBOUNCE_INTERVAL);
+      lastTimeout = window.setTimeout(action, DEBOUNCE_INTERVAL);
     }
   };
 })();
