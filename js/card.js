@@ -4,6 +4,10 @@
 (function () {
   var CURRENCY = '&#x20bd';
   var Z_INDEX_MAX = 9999;
+  var MAP_CARD_WIDTH = 206;
+  var SCROLL_WIDTH = 17;
+  var PHOTOS_GREED_WIDTH = 3;
+  var PHOTOS_CONTAINER_HEIGHT = '70';
   var cardElementTemplate = document.querySelector('template').content.querySelector('.map__card');
 
   var getTypeName = function (element) {
@@ -58,12 +62,8 @@
     }
   };
 
-  var addPhotos = function (el, proposal) {
-    var MAP_CARD_WIDTH = 206;
-    var SCROLL_WIDTH = 17;
-    var PHOTOS_GREED_WIDTH = 3;
-    var PHOTOS_CONTAINER_HEIGHT = '70';
-    var photosContainerElement = el.querySelector('.popup__pictures');
+  var addPhotos = function (element, proposal) {
+    var photosContainerElement = element.querySelector('.popup__pictures');
     for (var i = 1; i <= proposal.offer.photos.length; i++) {
       var photoElement = photosContainerElement.querySelector('img').cloneNode(true);
       photoElement.src = proposal.offer.photos[i - 1] + '';
