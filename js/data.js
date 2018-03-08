@@ -3,10 +3,7 @@
 
 (function () {
   window.data = {
-    keycode: {
-      ESC: 27,
-      ENTER: 13
-    },
+    ESC: 27,
     pinMainValues: {
       WIDTH: 65,
       HEIGHT: 65,
