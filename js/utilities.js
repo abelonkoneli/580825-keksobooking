@@ -87,7 +87,7 @@
       window.data.notice.formElement.classList.add('notice__form--disabled');
       document.querySelector('.form__element--submit').disabled = false;
       window.data.mapElement.classList.add('map--faded');
-      window.data.notice.addressElement.value = (window.data.pinMainElement.offsetLeft + window.data.pinMainValues.WIDTH / 2) + ', ' + (window.data.pinMainElement.offsetTop + (window.data.pinMainValues.HEIGHT + window.data.pinMainValues.AFTER_HEIGHT) / 2);
+      window.data.notice.addressElement.value = window.data.pinMainElement.offsetLeft + ', ' + window.data.pinMainElement.offsetTop;
       window.data.notice.submitButtonElement.removeEventListener('click', window.utilities.submitInvalidClickHandler);
     },
 
