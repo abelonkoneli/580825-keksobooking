@@ -49,7 +49,7 @@
     if (window.data.notice.formElement.classList.contains('notice__form--disabled')) {
       window.utilities.enableNoticeFormHandler();
     }
-    window.data.notice.addressElement.value = window.data.pinMainElement.offsetLeft + ', ' + (window.data.pinMainElement.offsetTop - window.data.pinMainValues.HEIGHT / 2 - window.data.pinMainValues.AFTER_HEIGHT);
+    window.data.notice.addressElement.value = window.data.pinMainElement.offsetLeft + ', ' + (window.data.pinMainElement.offsetTop + window.data.pinMainValues.HEIGHT / 2 + window.data.pinMainValues.AFTER_HEIGHT);
   };
   window.data.pinMainElement.addEventListener('mousedown', pinMainMousedownHandler);
 })();
